@@ -1,7 +1,7 @@
 # scribe
 
 Shared writing and code conventions for Claude Code sessions, packaged as one plugin.
-It holds the rules for how an agent writes — prose, chat replies, code and its comments, tests, Go mechanics, handoff documents — so every project and tool that relies on them reads one copy instead of keeping its own.
+It holds the rules for how an agent writes — prose, chat replies, code and its comments, tests, Go, Python and C# mechanics, handoff documents — so every project and tool that relies on them reads one copy instead of keeping its own.
 
 ## Install
 

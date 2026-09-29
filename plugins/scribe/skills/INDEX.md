@@ -9,6 +9,12 @@
 | [golang-comments](golang-comments/SKILL.md) | Godoc and inline comment mechanics for Go. Use when writing or reviewing Go comments. |
 | [golang-build](golang-build/SKILL.md) | Build and test commands for Go. Use after completing a task. |
 | [golang-testing](golang-testing/SKILL.md) | Testing conventions for Go projects. Use when writing tests. |
+| [python-comments](python-comments/SKILL.md) | Docstring and inline comment rules for Python. Use when writing Python comments. |
+| [python-build](python-build/SKILL.md) | Build and test commands for Python projects. Use after completing a task. |
+| [python-testing](python-testing/SKILL.md) | Testing conventions for Python projects. Use when writing tests. |
+| [csharp-comments](csharp-comments/SKILL.md) | XML doc and inline comment rules for C#/.NET. Use when writing C# comments. |
+| [csharp-build](csharp-build/SKILL.md) | Build and test commands for C#/.NET. Use after completing a task. |
+| [csharp-testing](csharp-testing/SKILL.md) | Testing conventions for C#/.NET projects. Use when writing tests. |
 | [handoff](handoff/SKILL.md) | Write a handoff document so a fresh session can continue this conversation's work. |
 
 `prose` and `conversation` are always active by default: `hooks/hooks.json` ships a `SessionStart` hook that asks the agent to load `scribe:conversation`, which builds on `scribe:prose`, once at the start of every session.
