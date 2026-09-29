@@ -1,0 +1,10 @@
+{
+  "name": "scribe",
+  "description": "Writing and code conventions: prose, conversation, code quality and comments, testing, Go mechanics, handoff",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Knatte18"
+  },
+  "hooks": "./hooks/hooks.json"
+}
