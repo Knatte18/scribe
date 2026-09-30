@@ -1,7 +1,7 @@
 {
   "name": "scribe",
   "description": "Writing and code conventions: prose, conversation, code quality and comments, testing, Go, Python and C# mechanics, handoff",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "license": "Apache-2.0",
   "author": {
     "name": "Knatte18"

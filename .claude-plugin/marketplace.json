@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "scribe",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "Shared writing and code conventions for Claude Code sessions",
   "owner": {
     "name": "Knatte18"
@@ -10,7 +10,7 @@
     {
       "name": "scribe",
       "description": "Writing and code conventions: prose, conversation, code quality and comments, testing, Go, Python and C# mechanics, handoff",
-      "version": "1.1.1",
+      "version": "1.1.0",
       "author": {
         "name": "Knatte18"
       },

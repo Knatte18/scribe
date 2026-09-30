@@ -12,6 +12,11 @@ It holds the rules for how an agent writes — prose, chat replies, code and its
 
 Install it once per machine at user level;
 it then applies in every session.
+
+## Deploying an edit
+
+Run `./update-plugins.sh` (`update-plugins.ps1` on Windows) after changing a skill: it mirrors the source into the cache directory the plugin is installed in.
+The version stays fixed at `1.1.0` and is never bumped: the cache path contains the version, so a bump moves the plugin to a new directory, and `update-plugins` deploys without one.
 See [plugins/scribe/skills/INDEX.md](plugins/scribe/skills/INDEX.md) for the skills.
 
 ## Repo-specific conventions
