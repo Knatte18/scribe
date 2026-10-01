@@ -1,0 +1,13 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "src/a\tb.txt",
+      "repository": { "full_name": "acme/badpath" },
+      "text_matches": [
+        { "property": "content", "fragment": "bad path", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

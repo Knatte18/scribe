@@ -1,0 +1,7 @@
+{
+  "sha": "srnonrectrunc",
+  "truncated": true,
+  "tree": [
+    { "path": "only.txt", "mode": "100644", "type": "blob", "sha": "bonly" }
+  ]
+}

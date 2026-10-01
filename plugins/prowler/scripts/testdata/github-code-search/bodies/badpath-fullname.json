@@ -1,0 +1,13 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "ok.txt",
+      "repository": { "full_name": "acme/bad\nname" },
+      "text_matches": [
+        { "property": "content", "fragment": "bad name", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

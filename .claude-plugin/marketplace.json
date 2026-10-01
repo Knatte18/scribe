@@ -16,6 +16,16 @@
       },
       "source": "./plugins/scribe",
       "category": "productivity"
+    },
+    {
+      "name": "prowler",
+      "description": "Fetch blocked/restricted/JS-rendered web pages and output readable markdown",
+      "version": "1.1.0",
+      "author": {
+        "name": "Knatte18"
+      },
+      "source": "./plugins/prowler",
+      "category": "productivity"
     }
   ]
 }

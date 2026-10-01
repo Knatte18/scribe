@@ -1,0 +1,27 @@
+{
+  "total_count": 3,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "docs/guide.md",
+      "repository": { "full_name": "acme/multi" },
+      "text_matches": [
+        { "property": "content", "fragment": "use tree-sitter\nfor parsing", "indices": [0, 5] }
+      ]
+    },
+    {
+      "path": "src/parser.rs",
+      "repository": { "full_name": "acme/multi" },
+      "text_matches": [
+        { "property": "content", "fragment": "let ts =\ttree_sitter::Parser", "indices": [0, 5] }
+      ]
+    },
+    {
+      "path": "notes.txt",
+      "repository": { "full_name": "acme/multi" },
+      "text_matches": [
+        { "property": "content", "fragment": "bump tree-sitter", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "sha": "srnoblobs",
+  "truncated": false,
+  "tree": [
+    { "path": "mod/one", "mode": "160000", "type": "commit", "sha": "cone" },
+    { "path": "mod/two", "mode": "160000", "type": "commit", "sha": "ctwo" }
+  ]
+}

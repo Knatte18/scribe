@@ -1,0 +1,13 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "gamma.rs",
+      "repository": { "full_name": "acme/gamma" },
+      "text_matches": [
+        { "property": "content", "fragment": "gamma hit", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

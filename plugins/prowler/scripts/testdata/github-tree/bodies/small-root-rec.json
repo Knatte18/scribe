@@ -1,0 +1,10 @@
+{
+  "sha": "srsmall",
+  "truncated": false,
+  "tree": [
+    { "path": "intro.md", "mode": "100644", "type": "blob", "sha": "bREADME" },
+    { "path": "src", "mode": "040000", "type": "tree", "sha": "tsrc" },
+    { "path": "src/main.go", "mode": "100644", "type": "blob", "sha": "bmain" },
+    { "path": "src/util.go", "mode": "100644", "type": "blob", "sha": "butil" }
+  ]
+}

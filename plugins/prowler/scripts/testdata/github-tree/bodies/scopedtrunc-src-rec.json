@@ -1,0 +1,7 @@
+{
+  "sha": "srscopedtrunc",
+  "truncated": true,
+  "tree": [
+    { "path": "s.txt", "mode": "100644", "type": "blob", "sha": "bs" }
+  ]
+}

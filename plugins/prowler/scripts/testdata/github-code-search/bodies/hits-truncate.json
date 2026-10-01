@@ -1,0 +1,21 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "long.txt",
+      "repository": { "full_name": "acme/trunc" },
+      "text_matches": [
+        { "property": "content", "fragment": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "indices": [0, 5] }
+      ]
+    },
+    {
+      "path": "two.txt",
+      "repository": { "full_name": "acme/trunc" },
+      "text_matches": [
+        { "property": "content", "fragment": "first fragment", "indices": [0, 5] },
+        { "property": "content", "fragment": "second fragment", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "sha": "tb",
+  "truncated": false,
+  "tree": [
+    { "path": "bown.txt", "mode": "100644", "type": "blob", "sha": "bbown" },
+    { "path": "x", "mode": "040000", "type": "tree", "sha": "tbx" },
+    { "path": "y", "mode": "040000", "type": "tree", "sha": "tby" }
+  ]
+}

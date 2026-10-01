@@ -1,0 +1,10 @@
+{
+  "sha": "srtypes",
+  "truncated": false,
+  "tree": [
+    { "path": "link", "mode": "120000", "type": "blob", "sha": "blink" },
+    { "path": "vendor/dep", "mode": "160000", "type": "commit", "sha": "csub" },
+    { "path": "real.txt", "mode": "100644", "type": "blob", "sha": "breal" },
+    { "path": "dir", "mode": "040000", "type": "tree", "sha": "tdir" }
+  ]
+}

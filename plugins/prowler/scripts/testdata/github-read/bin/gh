@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# gh is an offline stand-in for the real GitHub CLI, used only by
+# github-read-selftest.sh to drive github-read.sh's `gh api` fallback
+# without any network access.
+#
+# It accepts exactly two invocation shapes -- both against `gh api`, since
+# github-read.sh's two fallback calls (the type probe and the raw-media
+# content fetch) address the identical endpoint:
+#   - a probe call: gh api <endpoint> --jq <expr>          (4 args)
+#   - a content call: gh api <endpoint> -H <header>         (4 args)
+# Anything else is rejected outright with a distinct non-zero status and an
+# "unsupported invocation" message, rather than guessed at.
+#
+# Because both shapes address the same endpoint, the map keys on the shape
+# as well as the endpoint, so a scenario can give the probe and the content
+# fetch different fixtures for the same path.
+#
+# System `jq` is a dependency of this harness alone, never of
+# github-read.sh, which relies on the real CLI's embedded engine at run
+# time -- the same accepted seam the github-tree stub documents.
+set -u
+
+for var in GH_STUB_MAP GH_STUB_BODIES GH_STUB_LOG; do
+    value="${!var:-}"
+    if [ -z "$value" ]; then
+        echo "gh-stub: $var is not set" >&2
+        exit 99
+    fi
+done
+
+# Logged before anything about the invocation shape is checked, so a "no
+# call was made" assertion elsewhere is asserting something real even for a
+# call this stub goes on to reject.
+printf '%s\n' "$*" >>"$GH_STUB_LOG"
+
+if [ "$#" -ne 4 ] || [ "$1" != "api" ]; then
+    echo "gh-stub: unsupported invocation: $*" >&2
+    exit 98
+fi
+
+endpoint="$2"
+case "$3" in
+--jq)
+    shape="probe"
+    selector="$4"
+    ;;
+-H)
+    shape="content"
+    selector="$4"
+    ;;
+*)
+    echo "gh-stub: unsupported invocation: $*" >&2
+    exit 98
+    ;;
+esac
+
+matched_body=""
+matched_status=""
+matched_stderr=""
+found=0
+# Split on tab via parameter expansion rather than grep/sed: an endpoint
+# contains literal `?`/`&` characters that grep/sed would read as regex
+# metacharacters. `|| [ -n "$line" ]` keeps the last iteration even when
+# the map file has no trailing newline.
+while IFS= read -r line || [ -n "$line" ]; do
+    [ -z "$line" ] && continue
+    f_shape="${line%%$'\t'*}"
+    rest="${line#*$'\t'}"
+    f_endpoint="${rest%%$'\t'*}"
+    rest="${rest#*$'\t'}"
+    f_body="${rest%%$'\t'*}"
+    rest="${rest#*$'\t'}"
+    if [ "$rest" = "$f_body" ]; then
+        rest=""
+    fi
+    f_status="${rest%%$'\t'*}"
+    rest="${rest#*$'\t'}"
+    if [ "$rest" = "$f_status" ]; then
+        rest=""
+    fi
+    f_stderr="$rest"
+    if [ "$f_shape" = "$shape" ] && [ "$f_endpoint" = "$endpoint" ]; then
+        matched_body="$f_body"
+        matched_status="$f_status"
+        matched_stderr="$f_stderr"
+        found=1
+        break
+    fi
+done <"$GH_STUB_MAP"
+
+if [ "$found" -ne 1 ]; then
+    echo "gh-stub: no fixture for shape '$shape' endpoint: $endpoint" >&2
+    exit 97
+fi
+
+case "$matched_body" in
+/*) body_path="$matched_body" ;;
+*) body_path="$GH_STUB_BODIES/$matched_body" ;;
+esac
+
+if [ -n "$matched_status" ]; then
+    # Emulates the real `gh api` failure shape: the raw error body reaches
+    # stdout verbatim, the jq expression is never applied on this path
+    # either (the real CLI does not apply it on a failure), and stderr
+    # carries the named fixture when one is given, nothing otherwise.
+    cat "$body_path"
+    if [ -n "$matched_stderr" ]; then
+        case "$matched_stderr" in
+        /*) stderr_path="$matched_stderr" ;;
+        *) stderr_path="$GH_STUB_BODIES/$matched_stderr" ;;
+        esac
+        cat "$stderr_path" >&2
+    fi
+    exit 1
+fi
+
+if [ "$shape" = "probe" ]; then
+    jq -r "$selector" "$body_path"
+else
+    cat "$body_path"
+fi

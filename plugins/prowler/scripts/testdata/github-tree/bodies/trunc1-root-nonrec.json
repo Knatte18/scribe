@@ -1,0 +1,11 @@
+{
+  "sha": "srtrunc1",
+  "truncated": false,
+  "tree": [
+    { "path": "zzz.txt", "mode": "100644", "type": "blob", "sha": "bzzz" },
+    { "path": "Makefile", "mode": "100644", "type": "blob", "sha": "bmakefile" },
+    { "path": "mmm", "mode": "040000", "type": "tree", "sha": "tmmm" },
+    { "path": "aaa", "mode": "040000", "type": "tree", "sha": "taaa" },
+    { "path": "bbb", "mode": "040000", "type": "tree", "sha": "tbbb" }
+  ]
+}

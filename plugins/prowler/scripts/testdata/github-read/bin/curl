@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# curl is an offline stand-in for the real curl binary, used only by
+# github-read-selftest.sh to drive github-read.sh's raw-fetch attempt
+# without any network access.
+#
+# It reads its map, bodies directory, and call-log path from environment
+# variables (CURL_STUB_MAP / CURL_STUB_BODIES / CURL_STUB_LOG), refuses to
+# run when any is unset, and logs its full argument vector before doing
+# anything else -- the same shape as the sibling gh stub, so a "no call was
+# made" assertion elsewhere is asserting something real even for a call
+# this stub goes on to reject.
+#
+# The map is a single line: an exit status, and an optional body fixture
+# name. github-read.sh's raw attempt makes at most one curl call per run,
+# so one row is all any scenario needs.
+set -u
+
+for var in CURL_STUB_MAP CURL_STUB_BODIES CURL_STUB_LOG; do
+    value="${!var:-}"
+    if [ -z "$value" ]; then
+        echo "curl-stub: $var is not set" >&2
+        exit 99
+    fi
+done
+
+printf '%s\n' "$*" >>"$CURL_STUB_LOG"
+
+# Locate the file named after the -o flag by scanning arguments rather
+# than assuming a fixed position, so this stub keeps working even if
+# github-read.sh's argument order ever changes.
+outfile=""
+prev=""
+for arg in "$@"; do
+    if [ "$prev" = "-o" ]; then
+        outfile="$arg"
+        break
+    fi
+    prev="$arg"
+done
+
+exit_status="0"
+body_fixture=""
+if [ -s "$CURL_STUB_MAP" ]; then
+    IFS=$'\t' read -r exit_status body_fixture <"$CURL_STUB_MAP"
+fi
+
+if [ -n "$outfile" ]; then
+    if [ -n "$body_fixture" ]; then
+        case "$body_fixture" in
+        /*) body_path="$body_fixture" ;;
+        *) body_path="$CURL_STUB_BODIES/$body_fixture" ;;
+        esac
+        cat "$body_path" >"$outfile"
+    elif [ "$exit_status" = "0" ]; then
+        # A successful call with no body fixture named is the zero-byte
+        # success case: write nothing, but the file itself must still
+        # exist, matching what real curl leaves behind for an empty body.
+        : >"$outfile"
+    else
+        # A non-zero exit with no body fixture named: write nothing at
+        # all to the output file, reproducing what the real command does
+        # under its fail flag on a connection that never produced bytes.
+        rm -f "$outfile"
+    fi
+fi
+
+# Never writes to stdout or stderr on any path, matching the silent flag
+# this script's caller always passes.
+exit "$exit_status"

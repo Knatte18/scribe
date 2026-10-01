@@ -1,0 +1,13 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "beta.md",
+      "repository": { "full_name": "acme/beta" },
+      "text_matches": [
+        { "property": "content", "fragment": "beta hit", "indices": [0, 5] }
+      ]
+    }
+  ]
+}

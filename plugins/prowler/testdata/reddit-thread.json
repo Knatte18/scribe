@@ -1,0 +1,642 @@
+[
+  {
+    "kind": "Listing",
+    "data": {
+      "children": [
+        {
+          "kind": "t3",
+          "data": {
+            "title": "What is the idiomatic way to handle errors in Go?",
+            "selftext": "I've been writing Go for a few months and I keep wondering about the best way to propagate errors up the call stack. What patterns do you use?",
+            "author": "op_author",
+            "subreddit": "golang",
+            "body": "",
+            "url": "",
+            "score": 128,
+            "replies": ""
+          }
+        }
+      ]
+    }
+  },
+  {
+    "kind": "Listing",
+    "data": {
+      "children": [
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_0",
+            "subreddit": "golang",
+            "body": "Top-level comment zero, with many replies.",
+            "url": "",
+            "score": 50,
+            "replies": {
+              "kind": "Listing",
+              "data": {
+                "children": [
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply0",
+                      "subreddit": "golang",
+                      "body": "Reply number 0 to comment 0.",
+                      "url": "",
+                      "score": 0,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply1",
+                      "subreddit": "golang",
+                      "body": "Reply number 1 to comment 0.",
+                      "url": "",
+                      "score": 1,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply2",
+                      "subreddit": "golang",
+                      "body": "Reply number 2 to comment 0.",
+                      "url": "",
+                      "score": 2,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply3",
+                      "subreddit": "golang",
+                      "body": "Reply number 3 to comment 0.",
+                      "url": "",
+                      "score": 3,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply4",
+                      "subreddit": "golang",
+                      "body": "Reply number 4 to comment 0.",
+                      "url": "",
+                      "score": 4,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply5",
+                      "subreddit": "golang",
+                      "body": "Reply number 5 to comment 0.",
+                      "url": "",
+                      "score": 5,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply6",
+                      "subreddit": "golang",
+                      "body": "Reply number 6 to comment 0.",
+                      "url": "",
+                      "score": 6,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply7",
+                      "subreddit": "golang",
+                      "body": "Reply number 7 to comment 0.",
+                      "url": "",
+                      "score": 7,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply8",
+                      "subreddit": "golang",
+                      "body": "Reply number 8 to comment 0.",
+                      "url": "",
+                      "score": 8,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply9",
+                      "subreddit": "golang",
+                      "body": "Reply number 9 to comment 0.",
+                      "url": "",
+                      "score": 9,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply10",
+                      "subreddit": "golang",
+                      "body": "Reply number 10 to comment 0.",
+                      "url": "",
+                      "score": 10,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply11",
+                      "subreddit": "golang",
+                      "body": "Reply number 11 to comment 0.",
+                      "url": "",
+                      "score": 11,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply12",
+                      "subreddit": "golang",
+                      "body": "Reply number 12 to comment 0.",
+                      "url": "",
+                      "score": 12,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply13",
+                      "subreddit": "golang",
+                      "body": "Reply number 13 to comment 0.",
+                      "url": "",
+                      "score": 13,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply14",
+                      "subreddit": "golang",
+                      "body": "Reply number 14 to comment 0.",
+                      "url": "",
+                      "score": 14,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply15",
+                      "subreddit": "golang",
+                      "body": "Reply number 15 to comment 0.",
+                      "url": "",
+                      "score": 15,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply16",
+                      "subreddit": "golang",
+                      "body": "Reply number 16 to comment 0.",
+                      "url": "",
+                      "score": 16,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply17",
+                      "subreddit": "golang",
+                      "body": "Reply number 17 to comment 0.",
+                      "url": "",
+                      "score": 17,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply18",
+                      "subreddit": "golang",
+                      "body": "Reply number 18 to comment 0.",
+                      "url": "",
+                      "score": 18,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply19",
+                      "subreddit": "golang",
+                      "body": "Reply number 19 to comment 0.",
+                      "url": "",
+                      "score": 19,
+                      "replies": ""
+                    }
+                  },
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "capreply20",
+                      "subreddit": "golang",
+                      "body": "Reply number 20 to comment 0.",
+                      "url": "",
+                      "score": 20,
+                      "replies": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_1",
+            "subreddit": "golang",
+            "body": "Top-level comment one, with a reply that itself has a reply.",
+            "url": "",
+            "score": 40,
+            "replies": {
+              "kind": "Listing",
+              "data": {
+                "children": [
+                  {
+                    "kind": "t1",
+                    "data": {
+                      "title": "",
+                      "selftext": "",
+                      "author": "replier_1_0",
+                      "subreddit": "golang",
+                      "body": "The only reply to comment 1.",
+                      "url": "",
+                      "score": 3,
+                      "replies": {
+                        "kind": "Listing",
+                        "data": {
+                          "children": [
+                            {
+                              "kind": "t1",
+                              "data": {
+                                "title": "",
+                                "selftext": "",
+                                "author": "grandchild_author",
+                                "subreddit": "golang",
+                                "body": "A reply to a reply; must not be rendered.",
+                                "url": "",
+                                "score": 1,
+                                "replies": ""
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "kind": "more",
+          "data": {
+            "id": "abc123",
+            "children": [
+              "x1",
+              "x2"
+            ]
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_2",
+            "subreddit": "golang",
+            "body": "Top-level comment number 2.",
+            "url": "",
+            "score": 18,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_3",
+            "subreddit": "golang",
+            "body": "Top-level comment number 3.",
+            "url": "",
+            "score": 17,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_4",
+            "subreddit": "golang",
+            "body": "Top-level comment number 4.",
+            "url": "",
+            "score": 16,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_5",
+            "subreddit": "golang",
+            "body": "Top-level comment number 5.",
+            "url": "",
+            "score": 15,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_6",
+            "subreddit": "golang",
+            "body": "Top-level comment number 6.",
+            "url": "",
+            "score": 14,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_7",
+            "subreddit": "golang",
+            "body": "Top-level comment number 7.",
+            "url": "",
+            "score": 13,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_8",
+            "subreddit": "golang",
+            "body": "Top-level comment number 8.",
+            "url": "",
+            "score": 12,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_9",
+            "subreddit": "golang",
+            "body": "Top-level comment number 9.",
+            "url": "",
+            "score": 11,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_10",
+            "subreddit": "golang",
+            "body": "Top-level comment number 10.",
+            "url": "",
+            "score": 10,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_11",
+            "subreddit": "golang",
+            "body": "Top-level comment number 11.",
+            "url": "",
+            "score": 9,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_12",
+            "subreddit": "golang",
+            "body": "Top-level comment number 12.",
+            "url": "",
+            "score": 8,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_13",
+            "subreddit": "golang",
+            "body": "Top-level comment number 13.",
+            "url": "",
+            "score": 7,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_14",
+            "subreddit": "golang",
+            "body": "Top-level comment number 14.",
+            "url": "",
+            "score": 6,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_15",
+            "subreddit": "golang",
+            "body": "Top-level comment number 15.",
+            "url": "",
+            "score": 5,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_16",
+            "subreddit": "golang",
+            "body": "Top-level comment number 16.",
+            "url": "",
+            "score": 4,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_17",
+            "subreddit": "golang",
+            "body": "Top-level comment number 17.",
+            "url": "",
+            "score": 3,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_18",
+            "subreddit": "golang",
+            "body": "Top-level comment number 18.",
+            "url": "",
+            "score": 2,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_19",
+            "subreddit": "golang",
+            "body": "Top-level comment number 19.",
+            "url": "",
+            "score": 1,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_20",
+            "subreddit": "golang",
+            "body": "Top-level comment number 20.",
+            "url": "",
+            "score": 0,
+            "replies": ""
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "title": "",
+            "selftext": "",
+            "author": "top_author_21",
+            "subreddit": "golang",
+            "body": "Top-level comment number 21.",
+            "url": "",
+            "score": -1,
+            "replies": ""
+          }
+        }
+      ]
+    }
+  }
+]

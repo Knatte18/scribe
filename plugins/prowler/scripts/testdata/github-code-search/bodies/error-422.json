@@ -1,0 +1,5 @@
+{
+  "message": "Validation Failed: search query could not be parsed",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "422"
+}

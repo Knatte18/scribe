@@ -1,0 +1,15 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "absent.txt",
+      "repository": { "full_name": "acme/nomatch" }
+    },
+    {
+      "path": "empty.txt",
+      "repository": { "full_name": "acme/nomatch" },
+      "text_matches": []
+    }
+  ]
+}

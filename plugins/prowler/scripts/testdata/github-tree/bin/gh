@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# gh is an offline stand-in for the real GitHub CLI, used only by
+# github-tree-selftest.sh to drive github-tree.sh without any network
+# access. It deliberately answers no `gh auth status` call, because
+# github-tree.sh never makes one -- any other invocation shape is
+# rejected outright rather than guessed at, so a re-added preflight call
+# would fail loudly instead of being silently absorbed here. The `jq`
+# dependency exercised below belongs to this harness alone;
+# github-tree.sh at run time relies on the real `gh`'s embedded gojq, not
+# on this stub's use of jq.
+#
+# A mapped fixture name beginning with a slash is used verbatim as an
+# absolute path instead of being resolved under GH_STUB_BODIES: this lets a
+# scenario point at a fixture body generated at harness runtime into its
+# own scratch directory (see gen_tree_body in github-tree-selftest.sh)
+# rather than committing a large mechanically-identical fixture under
+# testdata/. Every existing scenario's bare filename is unaffected.
+set -u
+
+for var in GH_STUB_MAP GH_STUB_BODIES GH_STUB_LOG; do
+    value="${!var:-}"
+    if [ -z "$value" ]; then
+        echo "gh-stub: $var is not set" >&2
+        exit 99
+    fi
+done
+
+# Logged before anything about the invocation shape is checked, so a test
+# asserting "no call was made" elsewhere in the harness is asserting
+# something real even for calls this stub goes on to reject.
+printf '%s\n' "$*" >> "$GH_STUB_LOG"
+
+if [ "$#" -ne 4 ] || [ "$1" != "api" ] || [ "$3" != "--jq" ]; then
+    echo "gh-stub: unsupported invocation: $*" >&2
+    exit 98
+fi
+
+endpoint="$2"
+jq_expr="$4"
+
+matched_body=""
+matched_status=""
+found=0
+# Split on tab via parameter expansion rather than grep/sed: an endpoint
+# contains a literal `?`, which grep/sed would read as a regex metachar.
+# `|| [ -n "$line" ]` keeps the last iteration even when the map file has
+# no trailing newline (e.g. one built from `$(printf ...)`, which command
+# substitution strips): `read` returns non-zero on that final chunk but
+# still assigns it to $line, and without this the loop would silently
+# drop that last entry instead of matching it.
+while IFS= read -r line || [ -n "$line" ]; do
+    [ -z "$line" ] && continue
+    field1="${line%%$'\t'*}"
+    remainder="${line#*$'\t'}"
+    if [ "$remainder" = "$line" ]; then
+        remainder=""
+    fi
+    field2="${remainder%%$'\t'*}"
+    field3="${remainder#*$'\t'}"
+    if [ "$field3" = "$remainder" ]; then
+        field3=""
+    fi
+    if [ "$field1" = "$endpoint" ]; then
+        matched_body="$field2"
+        matched_status="$field3"
+        found=1
+        break
+    fi
+done < "$GH_STUB_MAP"
+
+if [ "$found" -ne 1 ]; then
+    echo "gh-stub: no fixture for endpoint: $endpoint" >&2
+    exit 97
+fi
+
+case "$matched_body" in
+/*) body_path="$matched_body" ;;
+*) body_path="$GH_STUB_BODIES/$matched_body" ;;
+esac
+
+if [ -n "$matched_status" ]; then
+    # Emulates the real `gh api` failure shape: the raw error body reaches
+    # stdout verbatim, nothing reaches stderr, and --jq is never applied --
+    # the real `gh` does not apply it on this path either, so the script
+    # under test parses the raw JSON error body itself.
+    cat "$body_path"
+    exit 1
+fi
+
+jq -r "$jq_expr" "$body_path"

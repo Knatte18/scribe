@@ -1,0 +1,8 @@
+{
+  "sha": "srbadpath",
+  "truncated": false,
+  "tree": [
+    { "path": "ok.txt", "mode": "100644", "type": "blob", "sha": "bok" },
+    { "path": "we\tird.txt", "mode": "100644", "type": "blob", "sha": "bweird" }
+  ]
+}

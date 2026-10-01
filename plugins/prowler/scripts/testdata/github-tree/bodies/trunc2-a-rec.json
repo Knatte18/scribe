@@ -1,0 +1,7 @@
+{
+  "sha": "ta",
+  "truncated": false,
+  "tree": [
+    { "path": "a1.txt", "mode": "100644", "type": "blob", "sha": "ba1" }
+  ]
+}

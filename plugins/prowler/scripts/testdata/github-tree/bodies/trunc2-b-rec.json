@@ -1,0 +1,7 @@
+{
+  "sha": "tb",
+  "truncated": true,
+  "tree": [
+    { "path": "x", "mode": "040000", "type": "tree", "sha": "tbx" }
+  ]
+}

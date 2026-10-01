@@ -1,0 +1,9 @@
+{
+  "sha": "tmmm",
+  "truncated": false,
+  "tree": [
+    { "path": "m1.txt", "mode": "100644", "type": "blob", "sha": "bm1" },
+    { "path": "sub", "mode": "040000", "type": "tree", "sha": "tsub" },
+    { "path": "sub/m2.txt", "mode": "100644", "type": "blob", "sha": "bm2" }
+  ]
+}

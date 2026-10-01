@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+# gh is an offline stand-in for the real GitHub CLI, used only by
+# github-code-search-selftest.sh to drive github-code-search.sh without
+# any network access. It deliberately answers no `gh auth status` call,
+# because github-code-search.sh never makes one -- any other invocation
+# shape is rejected outright rather than guessed at, so a re-added
+# preflight call of an unexpected shape would fail loudly instead of
+# being silently absorbed here. The `jq` dependency exercised below
+# belongs to this harness alone; github-code-search.sh at run time relies
+# on the real `gh`'s embedded gojq, not on this stub's use of jq.
+#
+# Two deliberate divergences from the sibling testdata/github-tree/bin/gh
+# stub:
+#
+# 1. It accepts exactly two invocation shapes, not one: the sibling's
+#    four-argument preflight shape `api <endpoint> --jq <expr>`, and a
+#    search shape `api -X GET <endpoint> -f <key>=<value> ... -H <header>
+#    --jq <expr>`. The argument vector is walked rather than positionally
+#    indexed, because the search shape's flags can appear in any order.
+# 2. map.tsv's first field is matched against a request key, not the bare
+#    endpoint: every search call in a multi-repo sweep hits the identical
+#    search/code endpoint, so an endpoint-keyed map cannot express one
+#    fixture per repo. The request key is the endpoint alone for a
+#    preflight call (unique per repo already) and
+#    "<endpoint>?q=<the full q value>" for a search call (unique per repo
+#    because each repo's query carries a distinct repo: qualifier).
+set -u
+
+for var in GH_STUB_MAP GH_STUB_BODIES GH_STUB_LOG; do
+    value="${!var:-}"
+    if [ -z "$value" ]; then
+        echo "gh-stub: $var is not set" >&2
+        exit 99
+    fi
+done
+
+# Logged before anything about the invocation shape is checked, so a test
+# asserting "no call was made" elsewhere in the harness is asserting
+# something real even for calls this stub goes on to reject.
+printf '%s\n' "$*" >> "$GH_STUB_LOG"
+
+if [ "$#" -lt 1 ] || [ "$1" != "api" ]; then
+    echo "gh-stub: unsupported invocation: $*" >&2
+    exit 98
+fi
+shift
+
+# Walk the remaining argument vector, collecting the -X value, every -f
+# key=value pair, every -H value, the --jq value, and the single
+# non-flag positional (the endpoint). This is what lets the search
+# shape's flags appear in any order.
+method=""
+endpoint=""
+jq_expr=""
+q_value=""
+have_q=0
+got_get=0
+got_textmatch_header=0
+saw_endpoint=0
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+    -X)
+        shift
+        [ "$#" -gt 0 ] || { echo "gh-stub: unsupported invocation: $*" >&2; exit 98; }
+        method="$1"
+        [ "$method" = "GET" ] && got_get=1
+        ;;
+    -f)
+        shift
+        [ "$#" -gt 0 ] || { echo "gh-stub: unsupported invocation: $*" >&2; exit 98; }
+        fkey="${1%%=*}"
+        fval="${1#*=}"
+        if [ "$fkey" = "q" ]; then
+            have_q=1
+            q_value="$fval"
+        fi
+        # per_page and any other -f parameter is accepted and ignored.
+        ;;
+    -H)
+        shift
+        [ "$#" -gt 0 ] || { echo "gh-stub: unsupported invocation: $*" >&2; exit 98; }
+        if [ "$1" = "Accept: application/vnd.github.text-match+json" ]; then
+            got_textmatch_header=1
+        fi
+        ;;
+    --jq)
+        shift
+        [ "$#" -gt 0 ] || { echo "gh-stub: unsupported invocation: $*" >&2; exit 98; }
+        jq_expr="$1"
+        ;;
+    -*)
+        echo "gh-stub: unsupported invocation: $*" >&2
+        exit 98
+        ;;
+    *)
+        if [ "$saw_endpoint" -eq 1 ]; then
+            echo "gh-stub: unsupported invocation: $*" >&2
+            exit 98
+        fi
+        endpoint="$1"
+        saw_endpoint=1
+        ;;
+    esac
+    shift
+done
+
+if [ "$saw_endpoint" -ne 1 ] || [ -z "$jq_expr" ]; then
+    echo "gh-stub: unsupported invocation: $*" >&2
+    exit 98
+fi
+
+if [ -n "$method" ]; then
+    # Search shape: -X was given, so every search-only requirement is
+    # mandatory -- a stub that tolerated a missing one would let a
+    # live-only failure through.
+    if [ "$got_get" -ne 1 ] || [ "$got_textmatch_header" -ne 1 ] || [ "$have_q" -ne 1 ]; then
+        echo "gh-stub: unsupported invocation: $*" >&2
+        exit 98
+    fi
+    request_key="${endpoint}?q=${q_value}"
+else
+    # Preflight shape: no -X, no -f, no -H permitted -- anything of that
+    # kind alongside a bare endpoint is not one of the two known shapes.
+    if [ "$have_q" -eq 1 ] || [ "$got_textmatch_header" -eq 1 ]; then
+        echo "gh-stub: unsupported invocation: $*" >&2
+        exit 98
+    fi
+    request_key="$endpoint"
+fi
+
+matched_body=""
+matched_status=""
+found=0
+# Split on tab via parameter expansion rather than grep/sed: a request
+# key contains literal `?`/`&` characters, which grep/sed would read as
+# regex metacharacters. `|| [ -n "$line" ]` keeps the last iteration even
+# when the map file has no trailing newline (e.g. one built from
+# `$(printf ...)`, which command substitution strips): `read` returns
+# non-zero on that final chunk but still assigns it to $line, and without
+# this the loop would silently drop that last entry instead of matching
+# it.
+while IFS= read -r line || [ -n "$line" ]; do
+    [ -z "$line" ] && continue
+    field1="${line%%$'\t'*}"
+    remainder="${line#*$'\t'}"
+    if [ "$remainder" = "$line" ]; then
+        remainder=""
+    fi
+    field2="${remainder%%$'\t'*}"
+    field3="${remainder#*$'\t'}"
+    if [ "$field3" = "$remainder" ]; then
+        field3=""
+    fi
+    if [ "$field1" = "$request_key" ]; then
+        matched_body="$field2"
+        matched_status="$field3"
+        found=1
+        break
+    fi
+done < "$GH_STUB_MAP"
+
+if [ "$found" -ne 1 ]; then
+    echo "gh-stub: no fixture for request key: $request_key" >&2
+    exit 97
+fi
+
+body_path="$GH_STUB_BODIES/$matched_body"
+
+if [ -n "$matched_status" ]; then
+    # Emulates the real `gh api` failure shape: the raw error body reaches
+    # stdout verbatim, nothing reaches stderr, and --jq is never applied --
+    # the real `gh` does not apply it on this path either, so the script
+    # under test parses the raw JSON error body itself. This holds for
+    # both invocation shapes.
+    cat "$body_path"
+    exit 1
+fi
+
+jq -r "$jq_expr" "$body_path"

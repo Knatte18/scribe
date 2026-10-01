@@ -1,0 +1,9 @@
+{
+  "sha": "srtrunc2",
+  "truncated": false,
+  "tree": [
+    { "path": "r.txt", "mode": "100644", "type": "blob", "sha": "br" },
+    { "path": "a", "mode": "040000", "type": "tree", "sha": "ta" },
+    { "path": "b", "mode": "040000", "type": "tree", "sha": "tb" }
+  ]
+}

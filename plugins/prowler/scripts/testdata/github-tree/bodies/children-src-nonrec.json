@@ -1,0 +1,10 @@
+{
+  "sha": "srchildren",
+  "truncated": false,
+  "tree": [
+    { "path": "main.go", "mode": "100644", "type": "blob", "sha": "bmain" },
+    { "path": "deep", "mode": "040000", "type": "tree", "sha": "tdeep" },
+    { "path": "vendor", "mode": "160000", "type": "commit", "sha": "csub" },
+    { "path": "util.go", "mode": "100644", "type": "blob", "sha": "butil" }
+  ]
+}

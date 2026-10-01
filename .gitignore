@@ -1,0 +1,5 @@
+# prowler plugin: build-on-first-run binary + its build lock, and a loose binary
+# from a plain `go build ./...` in plugins/prowler — never committed
+# (the nested go.mod/go.sum are source and stay committed).
+plugins/prowler/bin/
+plugins/prowler/prowler

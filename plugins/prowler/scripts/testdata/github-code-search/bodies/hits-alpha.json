@@ -1,0 +1,20 @@
+{
+  "total_count": 2,
+  "incomplete_results": false,
+  "items": [
+    {
+      "path": "src/alpha1.go",
+      "repository": { "full_name": "acme/alpha" },
+      "text_matches": [
+        { "property": "content", "fragment": "alpha one", "indices": [0, 5] }
+      ]
+    },
+    {
+      "path": "src/alpha2.go",
+      "repository": { "full_name": "acme/alpha" },
+      "text_matches": [
+        { "property": "content", "fragment": "alpha two", "indices": [0, 5] }
+      ]
+    }
+  ]
+}
