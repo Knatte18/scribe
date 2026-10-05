@@ -5,70 +5,37 @@ description: Testing conventions for Go projects. Use when writing tests.
 
 # Go Testing Skill
 
-Go-specific testing conventions.
-See `testing` for language-agnostic rules — assertion strictness, mock discipline, determinism, naming.
+Go-specific testing mechanics on top of `testing`, which this skill does not restate.
 
 ---
 
-## Framework: standard `testing` package
+## Framework and naming
 
-Go's built-in `testing` package is the standard.
-No external frameworks like testify.
-
----
-
-## Naming conventions
-
-**Test files:** named `<name>_test.go`, in the same directory as the code they test.
-
-**Test functions:** named `TestXxx`, uppercase first letter after `Test`.
-`Xxx` describes what's being tested.
-
-**Subtests:** use an underscore as a logical separator: `TestFoo_ScenarioName`.
-This is the one permitted exception to Go's usual no-underscores naming convention.
-
-**Example:**
-
-```go
-func TestUserValidation(t *testing.T) {
-	t.Run("ValidEmail", func(t *testing.T) {
-		// test valid email
-	})
-	t.Run("InvalidEmail_Empty", func(t *testing.T) {
-		// test empty email
-	})
-}
-```
-
----
+- The standard `testing` package; no testify or other framework.
+- `<name>_test.go` beside the code; `TestXxx` functions; subtests named `Scenario` or `Scenario_Detail`.
+- External test packages (`package foo_test`) are the default.
+  Use `package foo` only to reach a behavior the public surface cannot reach — never to test each unexported helper.
+  An unexported value the external test needs is exposed through `export_test.go` in `package foo`.
 
 ## Table-driven tests
 
-The standard pattern for any test with multiple scenarios.
-
-- Declare a slice named `tests` holding every case.
-- Name each entry `tt` — not `tc`, not `case`.
-- Call `t.Run(tt.name, ...)` per entry, as a subtest.
-- Default to `t.Error` (continues testing); use `t.Fatal` only when later assertions depend on the current one succeeding.
-- Error message format: `"Func(input) = got; want expected"` — actual before expected.
-
-**Example:**
+The pattern for every multi-scenario test, shown for a `go.mod` declaring Go 1.22 or later (earlier versions need `tt := tt` in the loop).
 
 ```go
 func TestAdd(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name string
 		a, b int
 		want int
 	}{
-		{"positive", 2, 3, 5},
-		{"negative", -1, -2, -3},
-		{"zero", 0, 0, 0},
+		{"Positive", 2, 3, 5},
+		{"Negative", -1, -2, -3},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := Add(tt.a, tt.b)
-			if got != tt.want {
+			t.Parallel()
+			if got := foo.Add(tt.a, tt.b); got != tt.want {
 				t.Errorf("Add(%d, %d) = %d; want %d", tt.a, tt.b, got, tt.want)
 			}
 		})
@@ -76,70 +43,29 @@ func TestAdd(t *testing.T) {
 }
 ```
 
----
+- The slice is `tests`, each entry `tt`.
+- `t.Error` by default; `t.Fatal` only when later assertions depend on this one.
+- Messages read `"Func(input) = got; want expected"`.
+- Compare structs with `cmp.Diff` from `github.com/google/go-cmp/cmp`, reporting `"Func() mismatch (-want +got):\n%s"`, when go-cmp is already a dependency;
+  otherwise use `reflect.DeepEqual`.
 
-## Test helpers
+## Parallelism and time
 
-- Call `t.Helper()` as the first line of any helper function, so a failure reports the calling test's line, not the helper's.
-- Prefer `t.Cleanup(f)` over manual `defer` for teardown — registered functions run after the test, LIFO.
-- Use `t.TempDir()` for a temporary directory that's cleaned up automatically.
+- `t.Parallel()` first in every test and subtest, unless it uses `t.Setenv`, `t.Chdir` (Go 1.24 and later) or a mutable fixture shared across tests.
+  A test that is not parallel says why in a comment.
+- Inject a duration as a field or option, never a package variable: a test that sets one cannot run in parallel.
+- Wait on a signal (channel, callback);
+  poll with a short tick and a deadline only when none exists, and never use a fixed real-time `time.Sleep`.
+- Time-driven code with no injectable duration can run under `testing/synctest` (Go 1.25 and later), where `time.Sleep` runs on a fake clock.
+  The clock advances only while every goroutine in the bubble is durably blocked;
+  real I/O and mutexes do not count.
 
-**Example:**
+## Helpers
 
-```go
-func TestFileWriter(t *testing.T) {
-	tmpDir := t.TempDir()
-	file := filepath.Join(tmpDir, "output.txt")
-	// test writes to file
-}
-
-func assertNoError(t *testing.T, err error) {
-	t.Helper()
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-}
-```
-
----
-
-## Struct comparison
-
-For complex structs, use `cmp.Diff` from `github.com/google/go-cmp/cmp` rather than `reflect.DeepEqual` — it gives a human-readable diff of what differs.
-That module is a dependency of the project under test, not of this skill file itself; import it in tests as needed.
-
-**Example:**
-
-```go
-import "github.com/google/go-cmp/cmp"
-
-func TestUserStruct(t *testing.T) {
-	got := parseUser("John Doe")
-	want := &User{Name: "John Doe", Email: ""}
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("parseUser() mismatch (-want +got):\n%s", diff)
-	}
-}
-```
-
----
-
-## Package naming
-
-**Same-package tests** (`package foo`) can access unexported identifiers — useful for testing internal behavior.
-
-**External tests** (`package foo_test`) exercise only the public API — preferred for library packages, since they verify what an external caller actually sees.
-
-Choose same-package for low-level unit tests of internals;
-external for integration tests and library packages.
-
----
+- `t.Helper()` first in every helper.
+- `t.Cleanup` over `defer`: a parent's `defer` runs before its parallel subtests do.
+- `t.TempDir()` for temporary files.
 
 ## Project conventions
 
-Defaults below; a project states its own test strategy — extra build tags, tier rules, hermetic-environment requirements — in its `CLAUDE.md`, and that overrides them.
-
-- **Test directory:** `*_test.go` alongside the code they test — standard Go layout.
-- **Fixture strategy:** `testdata/` subdirectories for fixture files (JSON, YAML, etc.), loaded explicitly in tests.
-- **Integration test markers:** `//go:build integration` build tags to exclude integration tests from the fast unit run;
-  `go test -tags=integration ./...` runs them separately.
+A project's `CLAUDE.md` states its own strategy — build tags, tiers, hermetic environments — and overrides these defaults: `testdata/` for fixture files, and `//go:build integration` to keep slow tests out of the default `go test ./...`.
