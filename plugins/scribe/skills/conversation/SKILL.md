@@ -56,7 +56,4 @@ Load `prose` first — this skill assumes those rules already apply.
   This holds for bulk changes too: make one `Edit` per site, or use `replace_all` for an identical string.
   A scripted rewrite shows none of what it changed, silently hits more or fewer places than intended, and depends on an interpreter the machine may not have.
   `sed` being unavailable is never a reason to reach for another language; `Edit` is the tool.
-- Never use `sed` at all, even to read.
-  It triggers a permission prompt on every call, which blocks unattended work.
-  For a genuine read-only one-liner, use `grep`, `awk` or `cat`.
 - These rules carry into every forked or sub-agent session that inherits this context.
