@@ -31,6 +31,32 @@ namespace Checkout
 ## XML documentation
 
 - All `public` methods and classes **must** have `/// <summary>` XML doc comments.
+- **Never write `<param>`, `<typeparam>`, `<returns>` or `<exception>` tags** as a list down a member's XML doc.
+  The `/// <summary>` alone is the doc;
+  when a parameter, the return value or a thrown exception needs a word, the summary's own sentences say it.
+
+**Bad example:**
+
+```csharp
+/// <summary>
+/// Reserves stock for an order line.
+/// </summary>
+/// <param name="sku">The SKU.</param>
+/// <param name="quantity">The quantity.</param>
+/// <returns>The reservation.</returns>
+/// <exception cref="InvalidOperationException">Thrown when stock is short.</exception>
+public Reservation ReserveStock(string sku, int quantity) {
+```
+
+**Good example:**
+
+```csharp
+/// <summary>
+/// Reserves the given quantity of a SKU against warehouse stock and returns the reservation the checkout later confirms.
+/// It throws <see cref="InvalidOperationException"/> when the warehouse holds less than the quantity.
+/// </summary>
+public Reservation ReserveStock(string sku, int quantity) {
+```
 
 ## Interface implementations — use `<inheritdoc/>`, never duplicate
 

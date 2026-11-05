@@ -566,12 +566,17 @@ func stubRedditRSSLimiter(t *testing.T) *redditRSSLimiterStub {
 // production: main prints exactly one line to stdout (the output file path), and the invoking
 // skill wrapper captures that single line. It runs without stubRedditRSSLimiter deliberately,
 // so it observes the package's real, un-redirected default.
+//
+// It checks the file's name, not identity with os.Stderr: under `go test -json` the testing
+// package sets os.Stderr = os.Stdout after package init, so the variable no longer holds the
+// file the package captured.
 func TestRedditRSSLogOutDefaultsToStderr(t *testing.T) {
-	if redditRSSLogOut != io.Writer(os.Stderr) {
-		t.Errorf("redditRSSLogOut = %v; want os.Stderr", redditRSSLogOut)
+	logFile, isFile := redditRSSLogOut.(*os.File)
+	if !isFile {
+		t.Fatalf("redditRSSLogOut = %T; want *os.File", redditRSSLogOut)
 	}
-	if redditRSSLogOut == io.Writer(os.Stdout) {
-		t.Error("redditRSSLogOut must never be os.Stdout")
+	if logFile.Name() != "/dev/stderr" {
+		t.Errorf("redditRSSLogOut.Name() = %q; want %q", logFile.Name(), "/dev/stderr")
 	}
 }
 
