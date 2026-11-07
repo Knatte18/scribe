@@ -66,7 +66,18 @@ so a single-word edit touches every wrapped line in the paragraph instead of jus
 Write one sentence per line;
 inside a long sentence, also break at an internal independent-clause boundary — a comma before a coordinating conjunction ("but"/"and"/"or"), or a semicolon, where what follows has its own subject and verb.
 A comma followed by a coordinating conjunction that joins a list item or a compound predicate does not trigger a break.
-When sentence-ending punctuation is ambiguous — a period inside a URL, or an abbreviation like "e.g." or "etc." — do not force a break there;
+
+**Keep each line under 120 characters of text.**
+A line of 120 characters breaks the rule; 119 passes.
+Count the text after a comment's `//` or a list item's marker, not the indentation or marker before it.
+Table cells, blockquotes, and headings are exempt.
+Over the limit, split at a semicolon, a colon, or a comma before a conjunction that opens an independent clause.
+When it has no such place, rewrite it as two or more shorter sentences.
+Never break mid-phrase to meet the limit.
+A line whose URL, code span, or identifier alone passes the limit may run longer.
+
+When sentence-ending punctuation is ambiguous, the sentence-per-line rule does not force a break there:
+a period inside a URL, or an abbreviation like "e.g." or "etc.", may not be a sentence end;
 readability wins over mechanical rule compliance in that edge case.
 Use a plain newline.
 Never trailing double-spaces or a backslash — those force a real `<br>`.
