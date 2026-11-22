@@ -14,6 +14,12 @@ Language-specific skills (e.g. `golang-testing`) build framework mechanics on to
 - **Test behavior at the public surface.**
   Assert observable outcomes at a module's exported API, CLI or file contract — not internal state, call sequence or each helper.
   A correct refactor of the internals never breaks these tests.
+- **Test what something relies on.**
+  A test pins behavior that other code or a user relies on.
+  Output only a human reads, such as a rendered README or a board markdown file, gets no test of its layout or wording:
+  no goldens and no snapshots.
+  A wrong rendering shows at once and breaks nothing.
+  Tests of data that other code reads from such output, and tests of the file writing, stay.
 - **One test per behavior.**
   A new test must cover a behavior no existing test covers;
   otherwise the case is a row or an assertion in the test that already covers it.
@@ -30,6 +36,9 @@ Language-specific skills (e.g. `golang-testing`) build framework mechanics on to
 
 - Assert the specific value, shape and side effect; "something came back" is not a test.
 - Prefer exact equality to substring or truthiness checks: `result == "valid"`, not `"valid" in result`.
+- Take the expected value from a literal, a worked example or the spec.
+  Never derive it by calling the code under test, a shared helper or the same formula:
+  such a test passes by construction and checks nothing.
 
 ## Determinism, isolation and speed
 
